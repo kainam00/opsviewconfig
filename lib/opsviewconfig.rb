@@ -16,7 +16,11 @@ class Opsviewconfig
     # Need to parse out junk we don't need to export
     res = export_parse(res)
     res.each do |resource|
-      File.write("#{folder}/#{resource['name']}.json",JSON.pretty_generate(resource))
+      filename = resource['name']
+      filename.gsub!(/[^0-9A-Za-z.\-]/, '_')
+      #puts "Exporting #{resource['name']} to #{filename}"
+      Dir.mkdir(folder) unless Dir.exist?(folder)
+      File.write("#{folder}/#{filename}.json",JSON.pretty_generate(resource))
     end
     return true
   end
