@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name        = 'opsviewconfig'
-  s.version     = '0.0.1'
-  s.date        = '2015-09-17'
+  s.version     = '0.0.2'
+  s.date        = '2015-12-04'
   s.summary     = "OpsView configuration import and export class"
   s.description = "A simple class to import and export OpsView config"
   s.authors     = ["Dmitriy M"]
