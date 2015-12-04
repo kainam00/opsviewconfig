@@ -37,8 +37,14 @@ class Opsviewconfig
 
   def import(type,filename=nil,folder=nil)
     resourceconfig = JSON.parse(File.read(filename))
-    resourceconfig[:type] = :host
-    p resourceconfig
+    resourceconfig[:type] = :"#{type}"
+    resourceconfig[:replace] = true
     res = @connection.create(resourceconfig)
+    return true
+  end
+
+  def reload()
+    @connection.initiate_reload()
+    return true
   end
 end
