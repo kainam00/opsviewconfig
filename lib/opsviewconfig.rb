@@ -24,10 +24,10 @@ class Opsviewconfig
     return @connecton
   end
 
-  def export(resource,folder)
-    res = @connection.list(:type => resource)
+  def export(resourcetype,folder)
+    res = @connection.list(:type => resourcetype)
     # Need to parse out junk we don't need to export
-    res = export_parse(res)
+    res = export_parse(res,resourcetype)
     res.each do |resource|
       filename = resource['name'].dup
       filename.gsub!(/[^0-9A-Za-z.\-]/, '_')
@@ -39,10 +39,18 @@ class Opsviewconfig
   end
 
 # Function to clean up the exported object
-  def export_parse(export)
+  def export_parse(export,resourcetype)
     cleanexport = Array.new()
     export.each do |resource|
+      # Delete the id's, since these are installation specific
       resource.delete("id")
+
+      # For servicechecks, delete the hosts which the servicechecks are assigned to, since these might not exist elsewhere
+      if resourcetype == "servicecheck"
+        resource.delete("hosts")
+      end
+
+      # Save
       cleanexport << resource.sort_by_key(true)
     end
     return cleanexport
