@@ -29,7 +29,7 @@ class Opsviewconfig
     # Need to parse out junk we don't need to export
     res = export_parse(res)
     res.each do |resource|
-      filename = resource['name']
+      filename = resource['name'].dup
       filename.gsub!(/[^0-9A-Za-z.\-]/, '_')
       #puts "Exporting #{resource['name']} to #{filename}"
       Dir.mkdir(folder) unless Dir.exist?(folder)
@@ -43,9 +43,9 @@ class Opsviewconfig
     cleanexport = Array.new()
     export.each do |resource|
       resource.delete("id")
-      cleanexport << resource
+      cleanexport << resource.sort_by_key(true)
     end
-    return cleanexport.sort_by_key(true)
+    return cleanexport
   end
 
   def import(type,filename=nil,folder=nil)
