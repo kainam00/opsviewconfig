@@ -45,9 +45,14 @@ class Opsviewconfig
       # Delete the id's, since these are installation specific
       resource.delete("id")
 
-      # For servicechecks, delete the hosts which the servicechecks are assigned to, since these might not exist elsewhere
-      if resourcetype == "servicecheck"
+      # For servicechecks and hosttemplates, delete the hosts which the servicechecks are assigned to, since these might not exist elsewhere
+      if resourcetype == "servicecheck" || resourcetype == "hosttemplate"
         resource.delete("hosts")
+      end
+
+      # Remove hosttemplates from servicechecks
+      if resourcetype == "servicecheck"
+        resource.delete("hosttemplates")
       end
 
       # Save
