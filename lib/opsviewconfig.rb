@@ -45,8 +45,8 @@ class Opsviewconfig
       # Delete the id's, since these are installation specific
       resource.delete("id")
 
-      # For servicechecks and hosttemplates, delete the hosts which the servicechecks are assigned to, since these might not exist elsewhere
-      if resourcetype == "servicecheck" || resourcetype == "hosttemplate"
+      # Delete the hosts to which the some of these resources are assigned to, since these might not exist elsewhere
+      if resourcetype == "servicecheck" || resourcetype == "hosttemplate" || resourcetype == "hostcheckcommand"
         resource.delete("hosts")
       end
 
@@ -54,6 +54,9 @@ class Opsviewconfig
       if resourcetype == "servicecheck"
         resource.delete("hosttemplates")
       end
+
+      # Don't save if this is an EC2 host instance, those should be generated automatically and we don't need to version control them
+      next if resource["hosttemplates"].find { |h| h['name'] == 'ec2instance'}
 
       # Save
       cleanexport << resource.sort_by_key(true)
