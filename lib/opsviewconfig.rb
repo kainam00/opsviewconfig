@@ -56,8 +56,9 @@ class Opsviewconfig
       end
 
       # Don't save if this is an EC2 host instance, those should be generated automatically and we don't need to version control them
-      next if resource["hosttemplates"].find { |h| h['name'] == 'ec2instance'}
-
+      if resourcetype == "host" && !resource["hosttemplates"].nil?
+        next if resource["hosttemplates"].find { |h| h['name'] == 'ec2instance'}
+      end
       # Save
       cleanexport << resource.sort_by_key(true)
     end
