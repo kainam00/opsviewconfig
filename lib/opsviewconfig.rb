@@ -59,6 +59,12 @@ class Opsviewconfig
       if resourcetype == "host" && !resource["hosttemplates"].nil?
         next if resource["hosttemplates"].find { |h| h['name'] == 'ec2instance'}
       end
+
+      # Don't save this if this is one of the default timeperiods
+      if resourcetype == "timeperiod"
+        next if ["workhours","nonworkhours","none","24x7"].include? resource["name"]
+      end
+
       # Save
       cleanexport << resource.sort_by_key(true)
     end
