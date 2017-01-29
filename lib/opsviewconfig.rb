@@ -57,7 +57,7 @@ class Opsviewconfig
 
       if resourcetype == "host"
         # Don't save if this is an EC2 host instance, those should be generated automatically and we don't need to version control them
-        unless resource['hosttemplates'].nil?
+        unless resource["hosttemplates"].nil?
           next if resource["hosttemplates"].find { |h| h['name'] == 'ec2instance' }
         end
         # Remove id's from the host attributes since they are auto-generated
