@@ -55,9 +55,15 @@ class Opsviewconfig
         resource.delete("hosttemplates")
       end
 
-      # Don't save if this is an EC2 host instance, those should be generated automatically and we don't need to version control them
-      if resourcetype == "host" && !resource["hosttemplates"].nil?
-        next if resource["hosttemplates"].find { |h| h['name'] == 'ec2instance'}
+      if resourcetype == "host"
+        # Don't save if this is an EC2 host instance, those should be generated automatically and we don't need to version control them
+        unless resource["hosttemplates"].nil?
+          next if resource["hosttemplates"].find { |h| h['name'] == 'ec2instance' }
+        end
+        # Remove id's from the host attributes since they are auto-generated
+        unless resource["hostattributes"].nil?
+          resource["hostattributes"].each { |attr| attr.delete("id") }
+        end
       end
 
       # Don't save this if this is one of the default timeperiods
