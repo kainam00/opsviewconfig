@@ -86,7 +86,7 @@ opts.each do |opt, arg|
   case opt
     when '--help'
       puts <<-EOF
-kmstool.rb [OPTION] ...
+script.rb [OPTION] ...
 
 -h, --help:
    show help
